@@ -1,0 +1,43 @@
+# Exercise - Rollback
+# this is a cloud formation template that creates a simple ec2 instance
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: Creating EC2 instance using Circle CI CD 
+Resources:
+  EC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      SecurityGroups:
+        - !Ref InstanceSecurityGroup
+
+      # Change this, as applicable to you   
+      # This is the name of the keypair that was created and downloaded in the AWS console   
+      KeyName: infrastructurecicd
+
+      # Change this, as applicable to you
+      # You may need to find out what instance types are available in your region - use https://cloud-images.ubuntu.com/locator/ec2/
+      # Software Image (AMI)
+      ImageId: 'ami-090fa75af13c156b4' 
+
+      # Virtual server type (instance type)
+      InstanceType: t2.micro
+
+      #creating instance SecurityGroup Resource, remeber it has already been referenced in the EC2Instance resource created
+  InstanceSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Enable SSH access via port 22 
+
+      # enabling inbound rules which includes port 22 -ssh port 
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: 0.0.0.0/0 
+      
+      #outbound rules allowing a range from 0 - 65535 >> of course we want out servers to accesss resources from outside
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
