@@ -71,5 +71,4 @@ Resources:
           ToPort: 65535
           CidrIp: 0.0.0.0/0
       
-      VpcId: 
-        - !Ref myVPC
+      VpcId: !Ref myVPC
