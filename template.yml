@@ -3,8 +3,33 @@
 AWSTemplateFormatVersion: 2010-09-09
 
 Description: Creating EC2 instance using Circle CI CD 
+
+Parameters:
+  # specifying the VPC cause without it the SecurityGroup can't be created
+    VpcCIDR:
+        Description: Please enter the IP range (CIDR notation) for this
+        Type: String
+        Default: 10.0.0.0/16
+  
+  EnvironmentName:
+        Description: An environment name that will be prefixed to resources
+        Type: String
+        Default: 'walexkino'
+
 Resources:
-  EC2Instance:
+
+  #creating VPC resources
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCIDR
+      EnableDnsHostnames: true
+      Tags:
+          - Key: Name
+            Value: !Ref EnvironmentName
+
+#creating EC2 instance
+  MyEC2Instance:
     Type: 'AWS::EC2::Instance'
     Properties:
       SecurityGroups:
@@ -21,6 +46,10 @@ Resources:
 
       # Virtual server type (instance type)
       InstanceType: t2.micro
+      Tags: 
+          - Key: Name
+            Value: !Ref EnvironmentName
+      #SubnetId: 
 
       #creating instance SecurityGroup Resource, remeber it has already been referenced in the EC2Instance resource created
   InstanceSecurityGroup:
