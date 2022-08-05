@@ -19,7 +19,7 @@ Parameters:
 Resources:
 
   #creating VPC resources
-  VPC:
+  myVPC:
     Type: AWS::EC2::VPC
     Properties:
       CidrBlock: !Ref VpcCIDR
@@ -70,3 +70,6 @@ Resources:
           FromPort: 0
           ToPort: 65535
           CidrIp: 0.0.0.0/0
+      
+      VpcId: 
+        - !Ref myVPC
