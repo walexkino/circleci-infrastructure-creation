@@ -1,12 +1,12 @@
 # Exercise - Rollback
 # this is a cloud formation template that creates a simple ec2 instance
-AWSTemplateFormatVersion: 2010-09-09
+
 
 Description: Creating EC2 instance using Circle CI CD 
 
 Parameters:
   # specifying the VPC cause without it the SecurityGroup can't be created
-    VpcCIDR:
+  VpcCIDR:
         Description: Please enter the IP range (CIDR notation) for this
         Type: String
         Default: 10.0.0.0/16
@@ -14,7 +14,7 @@ Parameters:
   EnvironmentName:
         Description: An environment name that will be prefixed to resources
         Type: String
-        Default: 'walexkino'
+        Default: "walexkino"
 
 Resources:
 
