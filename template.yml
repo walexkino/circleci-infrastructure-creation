@@ -32,7 +32,7 @@ Resources:
   MyEC2Instance:
     Type: 'AWS::EC2::Instance'
     Properties:
-      SecurityGroups:
+      SecurityGroupIds:
         - !Ref InstanceSecurityGroup
 
       # Change this, as applicable to you   
