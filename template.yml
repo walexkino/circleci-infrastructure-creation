@@ -15,6 +15,12 @@ Parameters:
         Description: An environment name that will be prefixed to resources
         Type: String
         Default: "walexkino"
+        
+  PublicSubnet1CIDR:
+        Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
+        Type: String
+        Default: 10.0.0.0/24
+
 
 Resources:
 
@@ -72,3 +78,12 @@ Resources:
           CidrIp: 0.0.0.0/0
       
       VpcId: !Ref myVPC
+
+  
+  PublicSubnet: 
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref myVPC
+      # AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: !Ref PublicSubnet1CIDR
+      MapPublicIpOnLaunch: true
