@@ -52,9 +52,7 @@ Resources:
 
       # Virtual server type (instance type)
       InstanceType: t2.micro
-      Tags: 
-          - Key: Name
-            Value: !Ref EnvironmentName
+      
       #SubnetId: 
 
       NetworkInterfaces:
@@ -64,18 +62,33 @@ Resources:
               - !Ref InstanceSecurityGroup
           SubnetId: !Ref PublicSubnet
 
+      Tags: 
+          - Key: Name
+            Value: !Ref EnvironmentName
+            
+
       #creating instance SecurityGroup Resource, remeber it has already been referenced in the EC2Instance resource created
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Enable SSH access via port 22 
 
-      # enabling inbound rules which includes port 22 -ssh port 
+      # enabling inbound rules which includes port 22 -ssh port, port 80 and 443
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: '22'
           ToPort: '22'
           CidrIp: 0.0.0.0/0 
+
+        - IpProtocol: tcp
+          FromPort: '80'
+          ToPort: '80'
+          CidrIp: 0.0.0.0/0
+
+        - IpProtocol: tcp
+          FromPort: '443'
+          ToPort: '443'
+          CidrIp: 0.0.0.0/0  
       
       #outbound rules allowing a range from 0 - 65535 >> of course we want out servers to accesss resources from outside
       SecurityGroupEgress:
@@ -86,7 +99,8 @@ Resources:
       
       VpcId: !Ref myVPC
 
-  
+  #public subent created
+
   PublicSubnet: 
     Type: AWS::EC2::Subnet
     Properties:
