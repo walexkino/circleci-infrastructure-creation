@@ -65,7 +65,7 @@ Resources:
       Tags: 
           - Key: Name
             Value: !Ref EnvironmentName
-            
+
 
       #creating instance SecurityGroup Resource, remeber it has already been referenced in the EC2Instance resource created
   InstanceSecurityGroup:
@@ -108,3 +108,14 @@ Resources:
       # AvailabilityZone: !Select [ 0, !GetAZs '' ]
       CidrBlock: !Ref PublicSubnet1CIDR
       MapPublicIpOnLaunch: true
+
+  # internet gateway
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  VPCGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref myVPC
+      InternetGatewayId: !Ref InternetGateway
