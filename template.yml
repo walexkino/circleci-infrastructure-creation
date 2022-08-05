@@ -57,6 +57,12 @@ Resources:
             Value: !Ref EnvironmentName
       #SubnetId: 
 
+      NetworkInterfaces:
+        - SubnetId: PublicSubnet
+          AssociatePublicIpAddress: true
+          DeviceIndex: "0"
+          GroupSet: !Ref InstanceSecurityGroup
+
       #creating instance SecurityGroup Resource, remeber it has already been referenced in the EC2Instance resource created
   InstanceSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
