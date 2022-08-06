@@ -137,6 +137,6 @@ Resources:
     DependsOn: VPCGatewayAttachment  
     Properties:
       RouteTableId: !Ref PublicRouteTable
-      DestinationCidrBlock: 0.0.0.0/0 # allowing any IPs through the routing table
+      DestinationCidrBlock: 0.0.0.0/23 # allowing any IPs through the routing table
       GatewayId: !Ref InternetGateway  
       
