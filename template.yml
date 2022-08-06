@@ -128,7 +128,7 @@ Resources:
     Properties:
       VpcId: !Ref myVPC
       Tags:
-          - Key: Name
+          - Key: Name 
             Value: !Ref EnvironmentName
   
     # Public route table has direct routing to IGW:
