@@ -108,6 +108,7 @@ Resources:
       # AvailabilityZone: !Select [ 0, !GetAZs '' ]
       CidrBlock: !Ref PublicSubnet1CIDR
       MapPublicIpOnLaunch: true
+      AvailabilityZone: !Select [ 0, !GetAZs ] 
 
   # internet gateway resource
 
@@ -137,6 +138,5 @@ Resources:
     Properties:
       RouteTableId: !Ref PublicRouteTable
       DestinationCidrBlock: 0.0.0.0/0 # allowing any IPs through the routing table
-      GatewayId: 
-        Ref: InternetGateway  
+      GatewayId: !Ref InternetGateway  
       
