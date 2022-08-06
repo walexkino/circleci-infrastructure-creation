@@ -113,7 +113,7 @@ Resources:
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
-    DependsOn: VPC
+    DependsOn: myVPC
     
   VPCGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
