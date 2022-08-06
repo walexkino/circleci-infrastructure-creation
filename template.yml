@@ -113,6 +113,7 @@ Resources:
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
+    DependsOn: myVPC
 
   VPCGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
@@ -132,12 +133,12 @@ Resources:
     # Public route table has direct routing to IGW:
   PublicRoute1:  
     Type: AWS::EC2::Route
-    DependsOn: VPCGatewayAttachment  #this is really critical  An error will occur if we attempt to build a route table
-                                    # entry to an unattached gateway.  To eliminate this error, we let CloudFormation know about 
-                                    #this dependency.  During stack creation it will not attempt to build this route table entry 
-                                    #until after the AttachGateway resource is created.  It will also wait for the VPC and internet 
-                                    #gateway, but those will finish up early.
+    DependsOn: VPCGatewayAttachment  
     Properties:
       RouteTableId: !Ref PublicRouteTable
       DestinationCidrBlock: 0.0.0.0/0 # allowing any IPs through the routing table
-      GatewayId: !Ref InternetGateway  
+      GatewayId: 
+        Ref: InternetGateway  
+      Tags:
+          - Key: Name
+            Value: !Ref EnvironmentName
