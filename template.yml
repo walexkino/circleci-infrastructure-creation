@@ -108,15 +108,21 @@ Resources:
       # AvailabilityZone: !Select [ 0, !GetAZs '' ]
       CidrBlock: !Ref PublicSubnet1CIDR
       MapPublicIpOnLaunch: true
-      AvailabilityZone: !Select [ 0, !GetAZs ] 
+      AvailabilityZone: !Select [ 0, !GetAZs ''] 
+      Tags:
+          - Key: Name
+            Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
 
   # internet gateway resource
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
-    DependsOn: myVPC
-    
-  VPCGatewayAttachment:
+    Properties:
+      Tags:
+          - Key: Name 
+            Value: !Ref EnvironmentName
+
+  VPCInternetGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
       VpcId: !Ref myVPC
@@ -129,14 +135,19 @@ Resources:
       VpcId: !Ref myVPC
       Tags:
           - Key: Name 
-            Value: !Ref EnvironmentName
+            Value: !Sub ${EnvironmentName} Public Routes
   
     # Public route table has direct routing to IGW:
   PublicRoute1:  
     Type: AWS::EC2::Route
-    DependsOn: VPCGatewayAttachment  
+    DependsOn: VPCInternetGatewayAttachment  
     Properties:
       RouteTableId: !Ref PublicRouteTable
-      DestinationCidrBlock: 0.0.0.0/23 # allowing any IPs through the routing table
+      DestinationCidrBlock: 0.0.0.0/0 # allowing any IPs through the routing table
       GatewayId: !Ref InternetGateway  
-      
+  
+  PublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet
