@@ -113,8 +113,8 @@ Resources:
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
-    DependsOn: myVPC
-
+    DependsOn: VPC
+    
   VPCGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
@@ -139,6 +139,4 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0 # allowing any IPs through the routing table
       GatewayId: 
         Ref: InternetGateway  
-      Tags:
-          - Key: Name
-            Value: !Ref EnvironmentName
+      
