@@ -96,13 +96,12 @@ Resources:
           ToPort: '3000'
           CidrIp: 0.0.0.0/0
       
-      #outbound rules allowing a range from 0 - 65535 >> of course we want out servers to accesss resources from outside
+      #outbound rules allowing all ranges of ports and range of protocol types >> of course we want out servers to accesss resources from outside
       SecurityGroupEgress:
-        - IpProtocol: tcp
-          FromPort: 0
-          ToPort: 65535
+        - IpProtocol: "-1"
           CidrIp: 0.0.0.0/0
-      
+
+          #defining the vpc at be attached to the ec2 instance
       VpcId: !Ref myVPC
 
   #public subent created
