@@ -88,7 +88,13 @@ Resources:
         - IpProtocol: tcp
           FromPort: '443'
           ToPort: '443'
-          CidrIp: 0.0.0.0/0  
+          CidrIp: 0.0.0.0/0
+        
+        - IpProtocol: tcp #I enabked this port because ansible is going to install the js sever / coppy the server files 
+                          #and i need to access the web app at 3000
+          FromPort: '3000'
+          ToPort: '3000'
+          CidrIp: 0.0.0.0/0
       
       #outbound rules allowing a range from 0 - 65535 >> of course we want out servers to accesss resources from outside
       SecurityGroupEgress:
