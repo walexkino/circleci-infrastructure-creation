@@ -5,6 +5,21 @@ version: 2.1
 #   # welcome: circleci/welcome-orb@0.4.1
 #   aws-cli: circleci/aws-cli@2.0.3
 # # Define the jobs we want to run for this project
+
+commands: # we defined this section as commands instead of jobs cause we want it to perform some explicit action 
+    # Exercise - Rollback
+  destroy_environment: # defines the command name title "destroy_environment" to destory the envirnment so this name can be called 
+                        # any where in the jobs below  instead of running this command as a job 
+    steps:
+      - run:
+          name: Destroy environment
+          # ${CIRCLE_WORKFLOW_ID} is a Built-in environment variable 
+          # ${CIRCLE_WORKFLOW_ID:0:5} takes the first 5 chars of the variable CIRCLE_CI_WORKFLOW_ID
+      
+          when: on_fail # this is some keywords that when the deployment fails it should delete the stack formation
+          command: |
+            aws cloudformation delete-stack --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:7}
+
 jobs:
 
   create_infrastructure:  # a job step that automatically creates infrastructure
@@ -15,11 +30,12 @@ jobs:
       - run:
           name: Create Cloudformation Stack
           command: | # note that this formation is for cloudformation using DEPLOY not CREATE so the syntax is different 
-            aws cloudformation deploy --template-file template.yml --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} --region us-east-1
+            aws cloudformation deploy --template-file template.yml --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:7} --region us-east-1
       # Fail the job intentionally to simulate an error.
       # Uncomment the line below if you want to fail the current step
-      # - run: return 1
-      # - destroy_environment
+      - run: return 1
+      - destroy_environment
+      
 # Sequential workflow
 workflows:
   # Name the workflow
